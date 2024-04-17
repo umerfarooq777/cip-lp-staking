@@ -1,0 +1,692 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_head",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_oracle",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_capping",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "AlreadyOnKohinoor",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "AlreadyRegistered",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "CannotReferYourself",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InsufficientFundsForWithdrawal",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidLevel",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_CIP",
+                "type": "uint256"
+            }
+        ],
+        "name": "LessThanMinStakingAmount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LessThanMinimumWithdrawalAmount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ReferrerNotRegistered",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "CIPAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "DollarAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "CIPStaked",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "CIPAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "Withdraw",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "EstimatedUniversalPoolRank",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "Total_Noof_User",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "Total_Staked_CIP",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "_getPriceCIP",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "result",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "_getPriceDAI",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "result",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "claimRank",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "claimUniversalPoolRank",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "earned",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_totalroi",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_noofSecond",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "emergencyWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "estimatedRank",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_rankId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_upLevel",
+                "type": "uint256"
+            }
+        ],
+        "name": "executeUniversalPoolIncome",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_val",
+                "type": "uint256"
+            }
+        ],
+        "name": "getFriendUpRank",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "ref",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "level",
+                "type": "uint256"
+            }
+        ],
+        "name": "getReferees",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "referees",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "level_downline",
+        "outputs": [
+            {
+                "internalType": "uint256[20]",
+                "name": "_noOfReferral",
+                "type": "uint256[20]"
+            },
+            {
+                "internalType": "uint256[20]",
+                "name": "_totalStaked",
+                "type": "uint256[20]"
+            },
+            {
+                "internalType": "uint256[20]",
+                "name": "_refBonus",
+                "type": "uint256[20]"
+            },
+            {
+                "internalType": "uint256[20]",
+                "name": "_rankBonus",
+                "type": "uint256[20]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_val",
+                "type": "uint256"
+            }
+        ],
+        "name": "referral",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "rewardWithdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_referralAddr",
+                "type": "address"
+            }
+        ],
+        "name": "staking",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unstake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "users",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "userId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "firstTimeStaked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "principleStaked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "selfTotalStaked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "teamTotalStaked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "directTotalStaked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "referrer",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "paidSecond",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "currentRankId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "universalPoolRankId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastUpdateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "usersBonus",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "roiUnSettled",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "roiBonus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "referralBonus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "rankBonus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "universalPoolBonus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalCreditedBonus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "principleCap",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalWithdrawalBonus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAvailableBonus",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_val",
+                "type": "uint256"
+            }
+        ],
+        "name": "val",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "view_DiamondQualifier",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "view_GoldQualifiers",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "view_KohinoorQualifier",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "view_PlatinumQualifier",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
