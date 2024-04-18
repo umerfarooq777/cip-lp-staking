@@ -593,15 +593,25 @@ const LP_TOKEN = ({
     watch: true,
     enabled: isStaked,
   });
+  const [canUnstake, setcanUnstake] = useState(false)
+  const [canClaimRewards, setcanClaimRewards] = useState(false)
 
   useEffect(() => {
     if (stakedTokenData !== undefined) {
       console.log("stakedTokenData", stakedTokenData);
+      setcanUnstake(Math.floor(new Date().getTime() / 1000) >= Number((stakedTokenData as any)?.endTime))
+      setcanClaimRewards((Math.floor(new Date().getTime() / 1000) >= Number((stakedTokenData as any)?.nextRewardTime)))
+    
       setstakedTokenIdData(stakedTokenData);
     } else {
+      setcanUnstake(false)
+      setcanClaimRewards(false)
       setstakedTokenIdData(null);
     }
   }, [stakedTokenData]);
+
+
+
 
   const [stakedTokenIdEarnedData, setstakedTokenIdEarnedData] = useState<null | any>(null);
 
@@ -673,12 +683,6 @@ const LP_TOKEN = ({
   });
 
 
-  const [canUnstake, setcanUnstake] = useState(false)
-  const [canClaimRewards, setcanClaimRewards] = useState(false)
-  useEffect(() => {
-    setcanUnstake(stakedTokenIdData && Math.floor(new Date().getTime() / 1000) >= Number(stakedTokenIdData?.endTime))
-    setcanClaimRewards((stakedTokenIdData && Math.floor(new Date().getTime() / 1000) >= Number(stakedTokenIdData?.nextRewardTime)))
-  }, [stakedTokenIdData])
 
 
   //==================================== UNSTAKE TOKEN ID =================================

@@ -570,6 +570,7 @@ export function EthereumProvider({ children }) {
     address: LP_STAKING_CONTRACT_ADDRESS,
     abi: LP_STAKING_CONTRACT_ABI,
     functionName: "getDownliners",
+    watch: true,
     
   };
   const downLineConfig = {
