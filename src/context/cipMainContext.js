@@ -618,6 +618,9 @@ export function EthereumProvider({ children }) {
     let newDataForDownline = [];
     let teamSize = 0;
     if (mylpDownLineData != undefined && getUserDetailsData !== undefined && currentWalletAddress) {
+      if(myLpDownLineDataMod2.length==0) {
+        setlpDownlineLoading(true)
+      }
       for (let i = 0; i < mylpDownLineData.length; i++) {
         if (mylpDownLineData[i].status == "success") {
           let noOfReferrals = mylpDownLineData[i]?.result;

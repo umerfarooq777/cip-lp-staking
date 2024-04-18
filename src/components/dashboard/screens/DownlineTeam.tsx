@@ -57,13 +57,20 @@ const DownlineTeam = () => {
                 ))}
               </tbody>
             </table>
-            {!paginatedData.length ? (
+            {lpDownLineLoading ? (
+              <TextRow>Loading... </TextRow>
+            ) : paginatedData.length == 0 ? (
+              "No Records to Show!"
+            ) : (
+              ""
+            )}
+            {/* {!paginatedData.length ? (
               <TextRow>
                 {lpDownLineLoading ? "Loading..." : "No Records to Show!"}
               </TextRow>
             ) : (
               <></>
-            )}
+            )} */}
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(myLpDownLineDataMod2.length / itemsPerPage)}
