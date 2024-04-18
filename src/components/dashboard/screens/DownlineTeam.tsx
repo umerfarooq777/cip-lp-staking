@@ -134,6 +134,7 @@ const TableRow = ({ data, index }: TableRowProps) => {
     functionName: "getUserDetails",
     args:[data?.address],
     enabled:data?.address?true:false,
+    watch:true
   });
 
   return (
