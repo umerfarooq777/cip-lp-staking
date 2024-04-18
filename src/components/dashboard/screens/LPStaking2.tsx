@@ -811,7 +811,7 @@ const LP_TOKEN = ({
                 <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
                   <span>Unstake Time:</span>
                   <span className="text-white text-end">
-                    {convertUnixTimestampToDateTimeStringWithAMPM(
+                  {convertUnixTimestampToDateTimeStringWithAMPM(
                       Number(stakedTokenIdData?.endTime)
                     )}
                   </span>

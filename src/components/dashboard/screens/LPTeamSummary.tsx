@@ -1,6 +1,6 @@
 import { TextRow } from "@/components";
 import { useEthereum } from "@/context/cipMainContext";
-import { convertWEITo, numberWithCommas } from "@/utils/helper";
+import { convertWEITo, convertWEITo_ForROI, numberWithCommas } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
 
 type TableHeaderProps = {
@@ -77,7 +77,7 @@ const TableRow = ({ level, noOfRef, refBonus }: any) => {
       <td className="p-3 text-start">{level}</td>
       <td className="p-3 text-start">{Number(noOfRef)}</td>
       <td className="p-3 text-start">
-        $ {numberWithCommas(convertWEITo(String(refBonus), "ether"))}
+        $ {numberWithCommas(convertWEITo_ForROI(String(refBonus), "ether"))}
       </td>
     </tr>
   );
