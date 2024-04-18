@@ -617,7 +617,7 @@ export function EthereumProvider({ children }) {
     let newData = [];
     let newDataForDownline = [];
     let teamSize = 0;
-    if (mylpDownLineData != undefined && getUserDetailsData !== undefined) {
+    if (mylpDownLineData != undefined && getUserDetailsData !== undefined && currentWalletAddress) {
       for (let i = 0; i < mylpDownLineData.length; i++) {
         if (mylpDownLineData[i].status == "success") {
           let noOfReferrals = mylpDownLineData[i]?.result;
@@ -653,7 +653,7 @@ export function EthereumProvider({ children }) {
     setlpMyDownLineDataMod(newData);
     setlpMyDownLineDataMod2(newDataForDownline)
     setlpDownlineLoading(false);
-  }, [mylpDownLineData]);
+  }, [mylpDownLineData,currentWalletAddress]);
 
   const {
     data: myDownLineData,
