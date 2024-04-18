@@ -807,6 +807,15 @@ const LP_TOKEN = ({
                     )}
                   </span>
                 </div>
+
+                <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
+                  <span>Unstake Time:</span>
+                  <span className="text-white text-end">
+                    {convertUnixTimestampToDateTimeStringWithAMPM(
+                      Number(stakedTokenIdData?.endTime)
+                    )}
+                  </span>
+                </div>
               </div>
             ) : (
               <div className="flex flex-col gap-2 text-neutral-400">
