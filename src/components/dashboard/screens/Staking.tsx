@@ -1,5 +1,5 @@
 "use client";
-import { useEthereum } from "@/context/cipMainContext";
+import { DISABLE_FUNC, useEthereum } from "@/context/cipMainContext";
 import { Button, CipList, GradientItem, JoinCryptoIndex, Note, StakeCip } from "../..";
 import React, { useEffect, useState } from "react";
 import {
@@ -95,14 +95,7 @@ const Staking = () => {
         ? "0"
         : convertETHTo(String(debouncedValuFromUserAmount), "wei"),
     ],
-    enabled:
-      Number(
-        debouncedValuFromUserAmount != undefined
-          ? debouncedValuFromUserAmount
-          : "0"
-      ) < 0
-        ? false
-        : true,
+    enabled:DISABLE_FUNC,
   });
 
   const { data: finalCIPAmont } = useContractRead({
@@ -120,7 +113,7 @@ const Staking = () => {
         ? "0"
         : stakeRoundedAmountInDAIWei,
     ],
-    enabled: Number(stakeRoundedAmountInDAIWei) < 0 ? false : true,
+    enabled: DISABLE_FUNC,
   });
 
   const { data: _diaRecalculated } = useContractRead({
@@ -129,6 +122,7 @@ const Staking = () => {
     functionName: "_getPriceDAI",
     args: [String(stakeAmountCIPinWei)],
     watch: true,
+    enabled:DISABLE_FUNC
   });
 
   function isAllowanceGiven(_allowedAmount: any, _currentAmount: any) {

@@ -31,6 +31,9 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
 export const TEST_MODE = true;
+export const ENABLE_FUNC = true;
+export const DISABLE_FUNC = false;
+
 
 //!================ LOADERS start
 
@@ -438,7 +441,7 @@ export function EthereumProvider({ children }) {
     functionName: "users",
     args: [currentWalletAddress],
     watch: true,
-    // enabled: currentWalletAddress ? true : false
+    enabled: DISABLE_FUNC
   });
   const { data: userBonusData } = useContractRead({
     address: CONTRACT_ADDRESS,
@@ -446,7 +449,7 @@ export function EthereumProvider({ children }) {
     functionName: "usersBonus",
     args: [currentWalletAddress],
     watch: true,
-    // enabled: currentWalletAddress ? true : false
+    enabled: DISABLE_FUNC
   });
   const { data: userEarnedData } = useContractRead({
     address: CONTRACT_ADDRESS,
@@ -454,7 +457,7 @@ export function EthereumProvider({ children }) {
     functionName: "earned",
     args: [currentWalletAddress],
     watch: true,
-    // enabled: currentWalletAddress ? true : false
+    enabled: DISABLE_FUNC
   });
   const { data: userCIPBalance } = useContractRead({
     address: CIP_PRO_ARBI,
@@ -471,7 +474,7 @@ export function EthereumProvider({ children }) {
       functionName: "level_downline",
       args: [currentWalletAddress],
       watch: true,
-      // enabled: currentWalletAddress ? true : false
+      enabled: DISABLE_FUNC
     });
   //!=====================================================
 
@@ -501,7 +504,8 @@ export function EthereumProvider({ children }) {
     abi: ABI,
     functionName: "owner",
     watch: true,
-    // enabled: CONTRACT_ADDRESS ? true : false
+    enabled:DISABLE_FUNC
+
   });
 
   const { data: oneCIPpriceInDAI } = useContractRead({
@@ -518,6 +522,7 @@ export function EthereumProvider({ children }) {
     functionName: "_getPriceCIP",
     args: [convertETHTo("100", "wei")],
     watch: true,
+    enabled:DISABLE_FUNC
   });
   const { data: userCurrentAllowance } = useContractRead({
     //check for user allowed cip
@@ -543,7 +548,7 @@ export function EthereumProvider({ children }) {
     functionName: "estimatedRank",
     args: [currentWalletAddress],
     watch: true,
-    // enabled: currentWalletAddress ? true : false
+    enabled: DISABLE_FUNC
   });
   const { data: estimated_UP_Rank } = useContractRead({
     address: CONTRACT_ADDRESS,
@@ -551,7 +556,7 @@ export function EthereumProvider({ children }) {
     functionName: "EstimatedUniversalPoolRank",
     args: [currentWalletAddress],
     watch: true,
-    // enabled: currentWalletAddress ? true : false
+    enabled: DISABLE_FUNC
   });
   const { data: getUserDetailsData } = useContractRead({
     address: LP_STAKING_CONTRACT_ADDRESS,
@@ -571,7 +576,7 @@ export function EthereumProvider({ children }) {
     address: CONTRACT_ADDRESS,
     abi: ABI,
     functionName: "getReferees",
-    enabled:false
+    enabled:DISABLE_FUNC
   };
 
   const { data: mylpDownLineData } = useContractReads({

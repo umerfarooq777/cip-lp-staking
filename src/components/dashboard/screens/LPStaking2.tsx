@@ -455,13 +455,13 @@ const LP_TOKEN = ({
     const [isAddressTokenOwner, setIsAddressTokenOwner] = useState<boolean>(true);
 
     useEffect(() => {
-      if(tokenOwnerAddress!==undefined){
+      if(tokenOwnerAddress!==undefined && currentWalletAddress){
         setIsAddressTokenOwner((tokenOwnerAddress as any).toLowerCase()===currentWalletAddress.toLowerCase())
 
       }
 
       
-    }, [tokenOwnerAddress])
+    }, [tokenOwnerAddress,currentWalletAddress])
     
     
   useEffect(() => {
@@ -672,6 +672,15 @@ const LP_TOKEN = ({
     },
   });
 
+
+  const [canUnstake, setcanUnstake] = useState(false)
+  const [canClaimRewards, setcanClaimRewards] = useState(false)
+  useEffect(() => {
+    setcanUnstake(stakedTokenIdData && Math.floor(new Date().getTime() / 1000) >= Number(stakedTokenIdData?.endTime))
+    setcanClaimRewards((stakedTokenIdData && Math.floor(new Date().getTime() / 1000) >= Number(stakedTokenIdData?.nextRewardTime)))
+  }, [stakedTokenIdData])
+
+
   //==================================== UNSTAKE TOKEN ID =================================
 
   const [unstakeUserToken1Loader, setunstakeUserToken1Loader] = useState(false);
@@ -681,7 +690,7 @@ const LP_TOKEN = ({
     functionName: "unstakeNFT",
     args: [id],
     account: currentWalletAddress,
-    enabled: isStaked,
+    enabled: isStaked && canUnstake,
   });
 
   const {
@@ -722,6 +731,9 @@ const LP_TOKEN = ({
       setunstakeUserToken1Loader(false);
     },
   });
+
+
+  
 
   function convertUnixTimestampToDateTimeStringWithAMPM(
     unixTimestamp: number
@@ -851,10 +863,8 @@ const LP_TOKEN = ({
                 key="3"
                 className="w-full text-sm my-2"
                 disabled={
-                  claimTokenRewardLoader ||
-                  (stakedTokenIdData &&
-                    Math.floor(new Date().getTime() / 1000) <
-                      Number(stakedTokenIdData?.nextRewardTime))
+                  claimTokenRewardLoader || !canClaimRewards
+                  
                 }
                 condition={claimTokenRewardLoader ? "loading" : "stable"}
                 onClick={() => claimTokenRewardWrite?.()}
@@ -866,10 +876,7 @@ const LP_TOKEN = ({
                 key="4"
                 className="w-full text-sm"
                 disabled={
-                  unstakeUserToken1Loader ||
-                  (stakedTokenIdData &&
-                    Math.floor(new Date().getTime() / 1000) <
-                      Number(stakedTokenIdData?.endTime))
+                  unstakeUserToken1Loader || !canUnstake
                 }
                 condition={unstakeUserToken1Loader ? "loading" : "stable"}
                 onClick={() => unstakeUserToken1Write?.()}

@@ -1,6 +1,6 @@
 import { Button, GradientItem, Input, Select } from "@/components";
 import Loader from "@/components/misc/Loader";
-import { TEST_MODE, useEthereum } from "@/context/cipMainContext";
+import { DISABLE_FUNC, TEST_MODE, useEthereum } from "@/context/cipMainContext";
 import { convertETHTo, convertWEITo, useDebounce } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
 import { useContractRead } from "wagmi";
@@ -51,7 +51,7 @@ const Convertor = () => {
     functionName: "getPrice",
     args: [CIP_PRO_ARBI,DAI_ARBI,convertETHTo(cip, "wei"),"10000"],
     watch: true,
-    enabled: (Number(cip) >= 0 ) ? true : false,
+    enabled: DISABLE_FUNC,
   });
 
   // const { data: finalCIPAmount, status: cipStatus } = useContractRead({
@@ -69,7 +69,7 @@ const Convertor = () => {
       functionName: "getPrice",
       args: [DAI_ARBI,CIP_PRO_ARBI,convertETHTo(dai, "wei"),"10000"],
       watch: true,
-      enabled: (Number(dai) >= 0 ) ? true : false,
+      enabled:  debouncedVal!=="" ,
   });
 
   useEffect(() => {
