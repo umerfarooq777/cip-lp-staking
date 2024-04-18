@@ -258,7 +258,7 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
                 />
               </div>
               <h3 className="font-bold text-xs sm:text-sm md:text-lg flex flex-1 justify-between">
-                {/* <span>Mint a new LP NFT</span>{" "} */}
+                {/* <span>Mint a new LP</span>{" "} */}
                 <span>DAI/CIP Pro</span>{" "}
                 {/* <span className="text-neutral-500 text-xl">
                 <Image
@@ -303,7 +303,7 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
                   <span className="text-white">{totalNFTsMinted}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm border-b border-[#ffffff15] py-2">
-                  <span>Mint a new NFT:</span>
+                  <span>Mint a new LP:</span>
                   <Button className="w-[100px] text-sm" disabled={mintNewNftLoader}
                     condition={mintNewNftLoader ? "loading" : "stable"} onClick={() => mintNewNftWrite?.()}>Mint</Button>
 
@@ -777,7 +777,7 @@ const LP_TOKEN = ({
         <div className="flex lg:items-end justify-between flex-col lg:flex-row flex-1 gap-4">
           <div className="flex-1">
             <h3 className="font-bold md:text-2xl mb-2 flex flex-1 justify-between">
-              <span>LP NFT ID #{id}</span>
+              <span>LP ID #{id}</span>
             </h3>
             {isStaked && stakedTokenIdData !== null ? (
               <div className="flex flex-col gap-2 text-neutral-400">
@@ -792,7 +792,7 @@ const LP_TOKEN = ({
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
-                  <span>Earned on this NFT: </span>
+                  <span>Earned on this LP: </span>
                   <span className="text-white">
                     ${" "}
                     {stakedTokenIdEarnedData
@@ -824,7 +824,7 @@ const LP_TOKEN = ({
             ) : (
               <div className="flex flex-col gap-2 text-neutral-400">
                 <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
-                  <span className="text-white">Stake your LP NFT </span>
+                  <span className="text-white">Stake your LP </span>
                   {/* <span className="text-white">100</span> */}
                 </div>
                 {!isValidRefAddress ? (
@@ -836,7 +836,7 @@ const LP_TOKEN = ({
                   ) : null}
                 {
                   !isAddressTokenOwner?
-                  <span className="text-red-600">You are not owner of NFT </span>
+                  <span className="text-red-600">You are not owner of LP </span>
                   :null
 
                 }
@@ -855,7 +855,7 @@ const LP_TOKEN = ({
                   condition={stakeUserToken1Loader ? "loading" : "stable"}
                   onClick={() => stakeUserToken1Write?.()}
                 >
-                  Stake NFT
+                  Stake LP
                 </Button>
               ) : (
                 <Button
@@ -866,7 +866,7 @@ const LP_TOKEN = ({
                   condition={approveUserToken1Loader ? "loading" : "stable"}
                   onClick={() => approveUserToken1Write?.()}
                 >
-                  Approve NFT
+                  Approve LP
                 </Button>
               )}
             </div>
@@ -894,7 +894,7 @@ const LP_TOKEN = ({
                 condition={unstakeUserToken1Loader ? "loading" : "stable"}
                 onClick={() => unstakeUserToken1Write?.()}
               >
-                Unstake NFT
+                Unstake LP
               </Button>
             </div>
           )}
