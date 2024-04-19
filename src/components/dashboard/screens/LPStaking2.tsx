@@ -87,6 +87,7 @@ const LPStaking2 = () => {
   });
   const [isUserRegistered, setisUserRegistered] = useState(false);
   const [userDirectRewards, setUserDirectRewards] = useState("0");
+  const [userClaimedRewards, setUserClaimedRewards] = useState("0");
   const { data: userLpDetails } = useContractRead({
     address: LP_STAKING_CONTRACT_ADDRESS,
     abi: LP_STAKING_CONTRACT_ABI,
@@ -102,6 +103,10 @@ const LPStaking2 = () => {
       setUserDirectRewards(
         convertWEITo(String((userLpDetails as any).directRewards), "ether")
       );
+      setUserClaimedRewards(
+        convertWEITo(String((userLpDetails as any).totalRewards), "ether")
+      );
+      
     }
   }, [userLpDetails]);
 
@@ -285,6 +290,12 @@ const LPStaking2 = () => {
               <span>Current APR:</span>
               <span className="text-white">
                 {currentAprData ? `${String(currentAprData)}%` : "--"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-sm border-b border-[#ffffff15] py-2">
+              <span>Your Claimed Rewards</span>
+              <span className="text-white">
+                $ {numberWithCommas(userClaimedRewards)}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm border-b border-[#ffffff15] py-2">
