@@ -103,9 +103,7 @@ const LPStaking2 = () => {
       setUserDirectRewards(
         convertWEITo(String((userLpDetails as any).directRewards), "ether")
       );
-      setUserClaimedRewards(
-        convertWEITo(String((userLpDetails as any).totalRewards), "ether")
-      );
+     
       
     }
   }, [userLpDetails]);
