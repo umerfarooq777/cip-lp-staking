@@ -150,7 +150,6 @@ export function EthereumProvider({ children }) {
     isConnecting,
     isDisconnected,
   } = useAccount();
-// const currentWalletAddress = "0x98D46295Ab7c25DeC396509dD96110516EE5fbFF"
 
   useEffect(() => {
     console.log("lpreferralcode", searchParams.get("lpreferralcode"));
