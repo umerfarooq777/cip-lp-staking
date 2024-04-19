@@ -598,12 +598,12 @@ const LP_TOKEN = ({
   const [canUnstake, setcanUnstake] = useState(false);
   const [canClaimRewards, setcanClaimRewards] = useState(false);
 
-  useEffect(() => {
-    console.log("canUnstake", canUnstake, id);
-  }, [canUnstake]);
-  useEffect(() => {
-    console.log("canClaimRewards", canClaimRewards, id);
-  }, [canClaimRewards]);
+  // useEffect(() => {
+  //   console.log("canUnstake", canUnstake, id);
+  // }, [canUnstake]);
+  // useEffect(() => {
+  //   console.log("canClaimRewards", canClaimRewards, id);
+  // }, [canClaimRewards]);
   // const [seconds, minutes, hours, days, months, years]  = useCountdownTimer(stakedTokenData==undefined?0:Number((stakedTokenData as any)?.endTime));
 
   useEffect(() => {
