@@ -896,6 +896,9 @@ const LP_TOKEN = ({
             </div>
           ) : (
             <div className="flex flex-col gap-4 items-end">
+            {
+              Number(stakedTokenIdData?.nextRewardTime) != 0
+              &&
               <Button
                 key="3"
                 className="w-full text-sm my-2"
@@ -905,6 +908,7 @@ const LP_TOKEN = ({
               >
                 Claim Rewards
               </Button>
+            }
 
               <Button
                 key="4"
