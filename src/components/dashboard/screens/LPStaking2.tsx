@@ -1,6 +1,11 @@
 import { Button, Input, Note } from "@/components";
 import { useEthereum } from "@/context/cipMainContext";
-import { convertWEITo, convertWEITo_ForROI, numberWithCommas, useDebounce } from "@/utils/helper";
+import {
+  convertWEITo,
+  convertWEITo_ForROI,
+  numberWithCommas,
+  useDebounce,
+} from "@/utils/helper";
 import { ZeroAddress, ethers } from "ethers";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -14,6 +19,7 @@ import {
 import { decode } from "base-64";
 import SmLoader from "@/components/misc/SmLoader";
 import { BsFillInfoCircleFill } from "react-icons/bs";
+import useCountdownTimer from "@/hooks/useCountdownTimer";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const LPStaking2 = () => {
@@ -35,13 +41,9 @@ const LPStaking2 = () => {
     isSelfRef,
   } = useEthereum();
 
-  
-
   useEffect(() => {
     console.log("lpreferralcode", { lpReferralAddress });
   }, [lpReferralAddress]);
-
-
 
   // ==================================== STAKED TVL DETAILS =================================
 
@@ -83,22 +85,23 @@ const LPStaking2 = () => {
     functionName: "getAPR",
     watch: true,
   });
-const [isUserRegistered, setisUserRegistered] = useState(false)
-const [userDirectRewards, setUserDirectRewards] = useState("0")
+  const [isUserRegistered, setisUserRegistered] = useState(false);
+  const [userDirectRewards, setUserDirectRewards] = useState("0");
   const { data: userLpDetails } = useContractRead({
     address: LP_STAKING_CONTRACT_ADDRESS,
     abi: LP_STAKING_CONTRACT_ABI,
     functionName: "getUserDetails",
-    args:[currentWalletAddress],    
+    args: [currentWalletAddress],
     watch: true,
-    enabled:currentWalletAddress?true:false,
+    enabled: currentWalletAddress ? true : false,
   });
   useEffect(() => {
-    
-    console.log("userLpDetails",userLpDetails)
+    console.log("userLpDetails", userLpDetails);
     if (userLpDetails !== undefined) {
       setisUserRegistered((userLpDetails as any).isRegistered);
-      setUserDirectRewards(convertWEITo(String((userLpDetails as any).directRewards),"ether"));
+      setUserDirectRewards(
+        convertWEITo(String((userLpDetails as any).directRewards), "ether")
+      );
     }
   }, [userLpDetails]);
 
@@ -106,35 +109,29 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
   //   console.log("currentAprData", currentAprData);
   // }, [currentAprData]);
 
-
   const { data: totalNFTs } = useContractRead({
     address: LP_NFT_CONTRACT_ADDRESS,
     abi: LP_NFT_CONTRACT_ABI,
     functionName: "_nextTokenId",
     watch: true,
-    enabled: TEST_MODE
-
+    enabled: TEST_MODE,
   });
 
   const [totalNFTsMinted, settotalNFTsMinted] = useState<string>("0");
 
-
   useEffect(() => {
     // console.log("totalNFTs", totalNFTs);
-    if (totalNFTs !== undefined) settotalNFTsMinted(String(totalNFTs))
-
-
+    if (totalNFTs !== undefined) settotalNFTsMinted(String(totalNFTs));
   }, [totalNFTs]);
 
-
   //==================================== MINT TOKEN ID =================================
-  const [mintNewNftLoader, setmintNewNftLoader] = useState(false)
+  const [mintNewNftLoader, setmintNewNftLoader] = useState(false);
   const { config: mintNewNftConfig } = usePrepareContractWrite({
     address: LP_NFT_CONTRACT_ADDRESS,
     abi: LP_NFT_CONTRACT_ABI,
     functionName: "safeMint",
     account: currentWalletAddress,
-    enabled: TEST_MODE
+    enabled: TEST_MODE,
   });
 
   const {
@@ -162,9 +159,12 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
     onSuccess(data: any) {
       console.log("final mintNewNft log", data);
       // setIsApprove(true)
-      notifySuccessWithHash("Transaction Confirmed", String(mintNewNftData?.hash));
+      notifySuccessWithHash(
+        "Transaction Confirmed",
+        String(mintNewNftData?.hash)
+      );
       setmintNewNftLoader(false);
-      refetchNFTData(currentWalletAddress)
+      refetchNFTData(currentWalletAddress);
     },
     onError(data: any) {
       notifyError("Transaction Failed");
@@ -172,8 +172,6 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
       setmintNewNftLoader(false);
     },
   });
-
-
 
   return (
     <>
@@ -295,8 +293,7 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
                 $ {numberWithCommas(userDirectRewards)}
               </span>
             </div>
-            {
-              TEST_MODE ?
+            {TEST_MODE ? (
               <>
                 <div className="flex items-center justify-between text-sm border-b border-[#ffffff15] py-2">
                   <span>Total NFTs Minted:</span>
@@ -304,19 +301,21 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
                 </div>
                 <div className="flex items-center justify-between text-sm border-b border-[#ffffff15] py-2">
                   <span>Mint a new LP:</span>
-                  <Button className="w-[100px] text-sm" disabled={mintNewNftLoader}
-                    condition={mintNewNftLoader ? "loading" : "stable"} onClick={() => mintNewNftWrite?.()}>Mint</Button>
-
+                  <Button
+                    className="w-[100px] text-sm"
+                    disabled={mintNewNftLoader}
+                    condition={mintNewNftLoader ? "loading" : "stable"}
+                    onClick={() => mintNewNftWrite?.()}
+                  >
+                    Mint
+                  </Button>
                 </div>
-              </> 
-
-              :null
-            }
-
+              </>
+            ) : null}
           </div>
         </article>
       </div>
-      { isUserRegistered ? (
+      {isUserRegistered ? (
         <article className="bg-neutral-900 rounded-lg p-5 w-full h-full flex flex-col justify-center items-start mt-5">
           {/* <img src="/icons/connections.svg" className="mb-5" alt="" /> */}
           <small className="text-neutral-500 font-medium text-sm md:text-base">
@@ -338,9 +337,20 @@ const [userDirectRewards, setUserDirectRewards] = useState("0")
       {/* other boxes */}
       {!userLPDataLoading ? (
         userLPData.length > 0 ? (
-          userLPData.map((item: { isStaked: boolean; id: string; tokenURI: string }, index: number) => (
-            <LP_TOKEN key={index} {...item} lpReferralAddress={lpReferralAddress} isValidRefAddress={isValidRefAddress} isSelfRef={isSelfRef} />
-          ))
+          userLPData.map(
+            (
+              item: { isStaked: boolean; id: string; tokenURI: string },
+              index: number
+            ) => (
+              <LP_TOKEN
+                key={index}
+                {...item}
+                lpReferralAddress={lpReferralAddress}
+                isValidRefAddress={isValidRefAddress}
+                isSelfRef={isSelfRef}
+              />
+            )
+          )
         ) : (
           <Note
             className="my-5"
@@ -382,8 +392,7 @@ const LP_TOKEN = ({
   tokenURI: string;
   lpReferralAddress: string;
   isValidRefAddress: boolean;
-  isSelfRef: boolean
-
+  isSelfRef: boolean;
 }) => {
   const {
     notifyError,
@@ -398,7 +407,7 @@ const LP_TOKEN = ({
     LP_TOKEN3_CONTRACT_ADDRESS,
     getUserLPTokenData: refetchUserNFTData,
     TEST_MODE,
-    headAddress
+    headAddress,
   } = useEthereum();
 
   const [NFTSVG, setNFTSVG] = useState<any>(null);
@@ -406,18 +415,15 @@ const LP_TOKEN = ({
 
   const getTokenSvgImage = (tokenURI: string) => {
     try {
-
-      const image64Data = tokenURI?.split(',')
-      const { image } = JSON.parse(decode(image64Data[1]))
-      const image64Data2 = image?.split(',')
-      const svgImage = decode(image64Data2[1])
-      setNFTSVG(svgImage)
-
+      const image64Data = tokenURI?.split(",");
+      const { image } = JSON.parse(decode(image64Data[1]));
+      const image64Data2 = image?.split(",");
+      const svgImage = decode(image64Data2[1]);
+      setNFTSVG(svgImage);
     } catch (error) {
       console.log(error);
-      setNFTSVG(null)
-      return null
-
+      setNFTSVG(null);
+      return null;
     }
   };
 
@@ -425,45 +431,41 @@ const LP_TOKEN = ({
     getTokenSvgImage(tokenURI);
   }, [tokenURI]);
 
-
   //!====================================  NOT STAKED
 
   const [isApprove, setIsApprove] = useState<boolean>(false);
   const [isStaked, setIsStaked] = useState<boolean>(nftStaked);
-  
+
   const { data: userToken1Allowance, error: userToken1AllowanceError } =
-  useContractRead({
-    //check for user allowed cip
-    address: LP_NFT_CONTRACT_ADDRESS,
-    abi: LP_NFT_CONTRACT_ABI,
-    functionName: "getApproved",
+    useContractRead({
+      //check for user allowed cip
+      address: LP_NFT_CONTRACT_ADDRESS,
+      abi: LP_NFT_CONTRACT_ABI,
+      functionName: "getApproved",
       args: [id],
       watch: true,
       enabled: !isStaked,
     });
 
+  const { data: tokenOwnerAddress } = useContractRead({
+    //check for user allowed cip
+    address: LP_NFT_CONTRACT_ADDRESS,
+    abi: LP_NFT_CONTRACT_ABI,
+    functionName: "ownerOf",
+    args: [id],
+    watch: true,
+  });
+  const [isAddressTokenOwner, setIsAddressTokenOwner] = useState<boolean>(true);
 
-  const { data: tokenOwnerAddress, } =
-    useContractRead({
-      //check for user allowed cip
-      address: LP_NFT_CONTRACT_ADDRESS,
-      abi: LP_NFT_CONTRACT_ABI,
-      functionName: "ownerOf",
-      args: [id],
-      watch: true,
-    });
-    const [isAddressTokenOwner, setIsAddressTokenOwner] = useState<boolean>(true);
+  useEffect(() => {
+    if (tokenOwnerAddress !== undefined && currentWalletAddress) {
+      setIsAddressTokenOwner(
+        (tokenOwnerAddress as any).toLowerCase() ===
+          currentWalletAddress.toLowerCase()
+      );
+    }
+  }, [tokenOwnerAddress, currentWalletAddress]);
 
-    useEffect(() => {
-      if(tokenOwnerAddress!==undefined && currentWalletAddress){
-        setIsAddressTokenOwner((tokenOwnerAddress as any).toLowerCase()===currentWalletAddress.toLowerCase())
-
-      }
-
-      
-    }, [tokenOwnerAddress,currentWalletAddress])
-    
-    
   useEffect(() => {
     if (userToken1Allowance !== undefined) {
       console.log(
@@ -474,7 +476,7 @@ const LP_TOKEN = ({
 
       setIsApprove(
         userToken1Allowance.toString().toLowerCase() ===
-        LP_STAKING_CONTRACT_ADDRESS.toLowerCase()
+          LP_STAKING_CONTRACT_ADDRESS.toLowerCase()
       );
     } else {
       setIsApprove(false);
@@ -593,27 +595,40 @@ const LP_TOKEN = ({
     watch: true,
     enabled: isStaked,
   });
-  const [canUnstake, setcanUnstake] = useState(false)
-  const [canClaimRewards, setcanClaimRewards] = useState(false)
+  const [canUnstake, setcanUnstake] = useState(false);
+  const [canClaimRewards, setcanClaimRewards] = useState(false);
+
+  useEffect(() => {
+    console.log("canUnstake", canUnstake, id);
+  }, [canUnstake]);
+  useEffect(() => {
+    console.log("canClaimRewards", canClaimRewards, id);
+  }, [canClaimRewards]);
+  // const [seconds, minutes, hours, days, months, years]  = useCountdownTimer(stakedTokenData==undefined?0:Number((stakedTokenData as any)?.endTime));
 
   useEffect(() => {
     if (stakedTokenData !== undefined) {
       console.log("stakedTokenData", stakedTokenData);
-      setcanUnstake(Math.floor(new Date().getTime() / 1000) >= Number((stakedTokenData as any)?.endTime))
-      setcanClaimRewards((Math.floor(new Date().getTime() / 1000) >= Number((stakedTokenData as any)?.nextRewardTime)))
-    
+      setcanUnstake(
+        Math.floor(new Date().getTime() / 1000) >=
+          Number((stakedTokenData as any)?.endTime)
+      );
+      setcanClaimRewards(
+        Math.floor(new Date().getTime() / 1000) >=
+          Number((stakedTokenData as any)?.nextRewardTime)
+      );
+
       setstakedTokenIdData(stakedTokenData);
     } else {
-      setcanUnstake(false)
-      setcanClaimRewards(false)
+      setcanUnstake(false);
+      setcanClaimRewards(false);
       setstakedTokenIdData(null);
     }
   }, [stakedTokenData]);
 
-
-
-
-  const [stakedTokenIdEarnedData, setstakedTokenIdEarnedData] = useState<null | any>(null);
+  const [stakedTokenIdEarnedData, setstakedTokenIdEarnedData] = useState<
+    null | any
+  >(null);
 
   const { data: stakedTokenEarnedData } = useContractRead({
     address: LP_STAKING_CONTRACT_ADDRESS,
@@ -682,9 +697,6 @@ const LP_TOKEN = ({
     },
   });
 
-
-
-
   //==================================== UNSTAKE TOKEN ID =================================
 
   const [unstakeUserToken1Loader, setunstakeUserToken1Loader] = useState(false);
@@ -735,9 +747,6 @@ const LP_TOKEN = ({
       setunstakeUserToken1Loader(false);
     },
   });
-
-
-  
 
   function convertUnixTimestampToDateTimeStringWithAMPM(
     unixTimestamp: number
@@ -803,22 +812,28 @@ const LP_TOKEN = ({
                       : "0"}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
-                  <span>Next Claim Reward:</span>
-                  <span className="text-white text-end">
-                    {convertUnixTimestampToDateTimeStringWithAMPM(
-                      Number(stakedTokenIdData?.nextRewardTime)
-                    )}
-                  </span>
-                </div>
+                {Number(stakedTokenIdData?.nextRewardTime) != 0 && (
+                  <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
+                    <span>Next Claim Reward:</span>
+                    <span className="text-white text-end">
+                      {convertUnixTimestampToDateTimeStringWithAMPM(
+                        Number(stakedTokenIdData?.nextRewardTime)
+                      )}
+                    </span>
+                  </div>
+                )}
 
                 <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
                   <span>Unstake Time:</span>
                   <span className="text-white text-end">
-                  {convertUnixTimestampToDateTimeStringWithAMPM(
+                    {convertUnixTimestampToDateTimeStringWithAMPM(
                       Number(stakedTokenIdData?.endTime)
                     )}
                   </span>
+                  {/* <span className="text-white text-end">
+                  
+                   { `${seconds}s ${minutes}m ${hours}h ${days}d ${months}m ${years}y `}
+                  </span> */}
                 </div>
               </div>
             ) : (
@@ -832,14 +847,13 @@ const LP_TOKEN = ({
                     Referral code is not valid{" "}
                   </span>
                 ) : isSelfRef ? (
-                  <span className="text-red-600">Can&apos;t Refer Yourself </span>
-                  ) : null}
-                {
-                  !isAddressTokenOwner?
+                  <span className="text-red-600">
+                    Can&apos;t Refer Yourself{" "}
+                  </span>
+                ) : null}
+                {!isAddressTokenOwner ? (
                   <span className="text-red-600">You are not owner of LP </span>
-                  :null
-
-                }
+                ) : null}
               </div>
             )}
           </div>
@@ -851,7 +865,12 @@ const LP_TOKEN = ({
                   key="1"
                   // className="min-w-32 rounded-full py-2 text-sm"
                   className="w-full text-sm my-2"
-                  disabled={stakeUserToken1Loader || !isValidRefAddress ||  !isAddressTokenOwner || isSelfRef}
+                  disabled={
+                    stakeUserToken1Loader ||
+                    !isValidRefAddress ||
+                    !isAddressTokenOwner ||
+                    isSelfRef
+                  }
                   condition={stakeUserToken1Loader ? "loading" : "stable"}
                   onClick={() => stakeUserToken1Write?.()}
                 >
@@ -862,7 +881,12 @@ const LP_TOKEN = ({
                   key="2"
                   // className="min-w-32 rounded-full py-2 text-sm"
                   className="w-full text-sm my-2"
-                  disabled={approveUserToken1Loader || !isValidRefAddress || !isAddressTokenOwner || isSelfRef}
+                  disabled={
+                    approveUserToken1Loader ||
+                    !isValidRefAddress ||
+                    !isAddressTokenOwner ||
+                    isSelfRef
+                  }
                   condition={approveUserToken1Loader ? "loading" : "stable"}
                   onClick={() => approveUserToken1Write?.()}
                 >
@@ -875,10 +899,7 @@ const LP_TOKEN = ({
               <Button
                 key="3"
                 className="w-full text-sm my-2"
-                disabled={
-                  claimTokenRewardLoader || !canClaimRewards
-                  
-                }
+                disabled={claimTokenRewardLoader || !canClaimRewards}
                 condition={claimTokenRewardLoader ? "loading" : "stable"}
                 onClick={() => claimTokenRewardWrite?.()}
               >
@@ -888,9 +909,7 @@ const LP_TOKEN = ({
               <Button
                 key="4"
                 className="w-full text-sm"
-                disabled={
-                  unstakeUserToken1Loader || !canUnstake
-                }
+                disabled={unstakeUserToken1Loader || !canUnstake}
                 condition={unstakeUserToken1Loader ? "loading" : "stable"}
                 onClick={() => unstakeUserToken1Write?.()}
               >

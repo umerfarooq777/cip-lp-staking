@@ -145,12 +145,12 @@ export function EthereumProvider({ children }) {
   const [lpReferralAddress, setReferralAddress] = useState("");
   const [isValidRefAddress, setIsValidRefAddress] = useState(true);
   const [isSelfRef, setIstSelfRef] = useState(false);
-  const {
-    address: currentWalletAddress,
-    isConnecting,
-    isDisconnected,
-  } = useAccount();
-
+  // const {
+  //   address: currentWalletAddress,
+  //   isConnecting,
+  //   isDisconnected,
+  // } = useAccount();
+const currentWalletAddress = "0x98D46295Ab7c25DeC396509dD96110516EE5fbFF"
 
   useEffect(() => {
     console.log("lpreferralcode", searchParams.get("lpreferralcode"));
