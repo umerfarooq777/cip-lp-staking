@@ -816,7 +816,7 @@ const LP_TOKEN = ({
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
-                  <span>Rewards to claim: </span>
+                  <span>Rewards to claim:  </span>
                   <span className="text-white">
                     ${" "}
                     {stakedTokenIdEarnedData
