@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* layers */
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.primary-button{
+  @apply bg-gradient-to-r from-[#5C27FE] via-[#9247FE]  to-[#3D00F8] px-5 py-2 md:px-9 md:py-3 text-xs md:text-sm rounded font-medium hover:scale-105 duration-300;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+    ::-webkit-scrollbar {
+      width: 7px;      
+    }
+
+    ::-webkit-scrollbar-track{
+      background-color: #ffffff11;
+    }
+
+    ::-webkit-scrollbar-thumb{
+      background-color: #6A3FD7;
+    }
+
+@font-face {
+  font-family: "gotham";
+  src: "/fonts/gotham/gotham-black.otf";
+}
+
+
+details[open]{
+  transform: rotateX(1deg) translateY(1px);
+}
+
+
+
+/* Custom css */
+
+.bg-gradient-custom {
+  background-image: linear-gradient(93deg,
+      rgba(103, 56, 223, 0.2) 0%,
+      rgba(72, 72, 72, 0) 35.99%,
+      rgba(100, 56, 223, 0.17) 55.39%,
+      rgba(100, 56, 223, 0) 136.97%);
+}
+
+.bg-input-gradient {
+  background: linear-gradient(0deg,
+      rgba(112, 60, 245, 0.1) 0%,
+      rgba(112, 60, 245, 0.1) 100%),
+    rgba(44, 48, 88, 0.5);
+}
+
+.bg-button-gradient {
+  border-radius: 8px;
+  background: linear-gradient(95deg, #5c27fe 42.37%, #dec7ff 149.91%),
+    linear-gradient(95deg, #5c27fe 34.09%, #dec7ff 119.12%),
+    linear-gradient(95deg,
+      #3f10b5 -7.6%,
+      rgba(103, 56, 223, 0.9) 40.26%,
+      #ac007d 98.51%);
+}
+
+.table {
+  border-spacing: 0 5px;
+}
+
+i {
+  font-size: 1rem !important;
+}
+
+.table tr {
+  border-radius: 20px;
+}
+
+tr td:nth-child(n + 5),
+tr th:nth-child(n + 5) {
+  border-radius: 0 0.35rem 0.35rem 0;
+  padding-inline-end: 2rem;
+}
+
+tr td:nth-child(1),
+tr th:nth-child(1) {
+  border-radius: 0.35rem 0 0 0.35rem;
+  padding-inline-start: 2rem;
+}
+
+/* loader */
+.loader {
+  border-top-color: #703CF5;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+}
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.Toastify__toast-container{
+  min-width: 30rem !important;
+  @media screen and (max-width: 480px) {
+    min-width: none !important;
+  }
+}
+
+.custom-progress{
+  background-color: #703CF5 !important;
+}
+
+
+.packageCard{
+  transform: rotateX(.75deg) translateY(0px);
+}
+
+
+@font-face {
+  font-family: "Sora";
+  src: "/fonts/Sora/Sora-SemiBold.ttf";
+  font-weight: 600;
+}
+
+
+.scroll-container{
+  width: 100%;
+  position: fixed;
+}
