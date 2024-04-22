@@ -825,7 +825,7 @@ const LP_TOKEN = ({
                       : "0"}
                   </span>
                 </div>
-                {Number(stakedTokenIdData?.nextRewardTime) != 0 && (
+                {Number(stakedTokenIdData?.nextRewardTime) !== 0 && (
                   <div className="flex items-center justify-between text-sm lg:text-lg border-b border-[#ffffff15] py-2">
                     <span>Next Claim Reward:</span>
                     <span className="text-white text-end">
@@ -910,16 +910,20 @@ const LP_TOKEN = ({
           ) : (
             <div className="flex flex-col gap-4 items-end">
             
-   
-              <Button
-                key="3"
-                className="w-full text-sm my-2"
-                disabled={claimTokenRewardLoader || !canClaimRewards}
-                condition={claimTokenRewardLoader ? "loading" : "stable"}
-                onClick={() => claimTokenRewardWrite?.()}
-              >
-                Claim Rewards
-              </Button>
+   {
+    stakedTokenIdData !== null && Number(stakedTokenIdData.nextRewardTime) !== 0 &&
+    
+    <Button
+    key="3"
+    className="w-full text-sm my-2"
+    disabled={claimTokenRewardLoader || !canClaimRewards}
+    condition={claimTokenRewardLoader ? "loading" : "stable"}
+    onClick={() => claimTokenRewardWrite?.()}
+  >
+    Claim Rewards
+  </Button>
+   }
+            
             
 
               <Button
