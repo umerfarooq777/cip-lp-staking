@@ -88,6 +88,7 @@ const LPStaking2 = () => {
   const [isUserRegistered, setisUserRegistered] = useState(false);
   const [userDirectRewards, setUserDirectRewards] = useState("0");
   const [userClaimedRewards, setUserClaimedRewards] = useState("0");
+
   const { data: userLpDetails } = useContractRead({
     address: LP_STAKING_CONTRACT_ADDRESS,
     abi: LP_STAKING_CONTRACT_ABI,
@@ -99,12 +100,13 @@ const LPStaking2 = () => {
   useEffect(() => {
     console.log("userLpDetails", userLpDetails,currentWalletAddress);
     if (userLpDetails !== undefined) {
-      setisUserRegistered((userLpDetails as any)?.isRegistered);
+      setisUserRegistered((userLpDetails as any).isRegistered);
       setUserDirectRewards(
-        convertWEITo(String((userLpDetails as any)?.directRewards), "ether")
+        convertWEITo(String((userLpDetails as any).directRewards), "ether")
       );
+      // console.log("userLpDetails",convertWEITo_ForROI(String((userLpDetails as any).totalRewards), "ether"),"string")
       setUserClaimedRewards(
-        convertWEITo(String((userLpDetails as any)?.totalRewards), "ether")
+        convertWEITo_ForROI(String((userLpDetails as any).totalRewards), "ether")
       );
 
      
