@@ -97,12 +97,16 @@ const LPStaking2 = () => {
     enabled: currentWalletAddress ? true : false,
   });
   useEffect(() => {
-    console.log("userLpDetails", userLpDetails);
+    console.log("userLpDetails", userLpDetails,currentWalletAddress);
     if (userLpDetails !== undefined) {
-      setisUserRegistered((userLpDetails as any).isRegistered);
+      setisUserRegistered((userLpDetails as any)?.isRegistered);
       setUserDirectRewards(
-        convertWEITo(String((userLpDetails as any).directRewards), "ether")
+        convertWEITo(String((userLpDetails as any)?.directRewards), "ether")
       );
+      setUserClaimedRewards(
+        convertWEITo(String((userLpDetails as any)?.totalRewards), "ether")
+      );
+
      
       
     }
