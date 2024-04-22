@@ -197,7 +197,7 @@ const LPStaking2 = () => {
                   alt="ethereum icon"
                 />
                 <Image
-                  src="/icons/cip.svg"
+                  src="/icons/round-cip-pro.png"
                   width={30}
                   height={30}
                   className="mb-5 relative z-10 -translate-x-1/4"
@@ -226,7 +226,7 @@ const LPStaking2 = () => {
                   alt="ethereum icon"
                 />
                 <Image
-                  src="/icons/cip.svg"
+                  src="/icons/round-cip-pro.png"
                   width={30}
                   height={30}
                   className="mb-5 relative z-10 -translate-x-1/4"
@@ -255,7 +255,7 @@ const LPStaking2 = () => {
                   alt="ethereum icon"
                 />
                 <Image
-                  src="/icons/cip.svg"
+                  src="/icons/round-cip-pro.png"
                   width={30}
                   height={30}
                   className="mb-5 relative z-10 -translate-x-1/4"

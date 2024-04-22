@@ -33,7 +33,7 @@ const SidebarUser = ({
       className={`w-72 z-10 bg-black-800 py-8 md:relative md:translate-x-0 duration-300 h-screen overflow-auto no-scrollbar fixed ${open ? "" : "-translate-x-full"}`}
     >
       <div className="flex justify-center py-3">
-        <img src="/logos/logo.svg" className="max-w-[55%] h-12" />
+        <img src="/logos/cip-pro-small.png" className="max-w-[55%] h-12" />
       </div>
 
       <div className="flex md:hidden gap-x-4 pt-3 items-center justify-between">

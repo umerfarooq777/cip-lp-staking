@@ -18,7 +18,7 @@ const Header = ({ open, setOpen, isAdmin }: Props) => {
         <div className="flex">
           {!isAdmin &&
         <div className="flex py-3">
-        <img src="/logos/logo.svg" className="max-w-[85%] h-12" />
+        <img src="/logos/cip-pro-small.png" className="max-w-[85%] h-12" />
       </div>  
           }
         

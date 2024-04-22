@@ -16,7 +16,7 @@ const Convertor = () => {
   const options = [
     {
       id: "0",
-      icon: "/icons/cip.svg",
+      icon: "/icons/round-cip-pro.png",
       value: "CIP Pro",
     },
     {

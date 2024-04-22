@@ -41,7 +41,7 @@ const LPTeamSummary = () => {
             {lpDownLineLoading ? (
               <TextRow>Loading... </TextRow>
             ) : myLpDownLineDataMod.length == 0 ? (
-              "No Records to Show!"
+              <TextRow>No Records to Show!</TextRow>
             ) : (
               ""
             )}

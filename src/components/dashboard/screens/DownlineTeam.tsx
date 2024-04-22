@@ -60,7 +60,8 @@ const DownlineTeam = () => {
             {lpDownLineLoading ? (
               <TextRow>Loading... </TextRow>
             ) : paginatedData.length == 0 ? (
-              "No Records to Show!"
+
+              <TextRow>No Records to Show!</TextRow>
             ) : (
               ""
             )}

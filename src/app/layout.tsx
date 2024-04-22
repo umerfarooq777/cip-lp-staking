@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Crypto Index Pool Pro",
   icons: {
-    icon: '/icons/cip.svg',
+    icon: '/icons/round-cip-pro.png',
   },
 };
 
