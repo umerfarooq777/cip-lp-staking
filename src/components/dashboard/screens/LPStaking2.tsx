@@ -1,5 +1,5 @@
 import { Button, Input, Note } from "@/components";
-import { useEthereum } from "@/context/cipMainContext";
+import { CLIENT_BASE_URL, useEthereum } from "@/context/cipMainContext";
 import {
   convertWEITo,
   convertWEITo_ForROI,
@@ -20,7 +20,7 @@ import { decode } from "base-64";
 import SmLoader from "@/components/misc/SmLoader";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import useCountdownTimer from "@/hooks/useCountdownTimer";
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = CLIENT_BASE_URL;
 
 const LPStaking2 = () => {
   const {

@@ -33,8 +33,8 @@ import { useRouter } from "next/router";
 export const TEST_MODE = true;
 export const ENABLE_FUNC = true;
 export const DISABLE_FUNC = false;
-
-
+export const CLIENT_BASE_URL = TEST_MODE?"http://localhost:3000/":"https://dapp.cippro.io/"; //
+export const ALCHEMY_API_KEY = "iC7XerO0T0VuHxfivkPAZl8K1c8VKOgN"
 //!================ LOADERS start
 
 const notifySuccessWithHashToastId = { current: null };
@@ -207,11 +207,11 @@ export function EthereumProvider({ children }) {
       userAddress = userAddress?.toLowerCase();
 
       const sepoliaProvider = new ethers.JsonRpcProvider(
-        `https://eth-sepolia.g.alchemy.com/v2/5IAB9CnzPGKH_YMPvB0WtER0eYaJ1rCp`
+        `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
       );
 
       const arbiProvider = new ethers.JsonRpcProvider(
-        `https://arb-mainnet.g.alchemy.com/v2/rPP4tqmuLqPcd0I0qh32c1H8wCSDsiB9`
+        `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
       );
       // Create a contract instance
       const nftContract = new ethers.Contract(
@@ -307,7 +307,7 @@ export function EthereumProvider({ children }) {
       userAddress = userAddress?.toLowerCase();
 
       const arbiProvider = new ethers.JsonRpcProvider(
-        `https://arb-mainnet.g.alchemy.com/v2/rPP4tqmuLqPcd0I0qh32c1H8wCSDsiB9`
+        `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
       );
 
       const lpStakeContract = new ethers.Contract(

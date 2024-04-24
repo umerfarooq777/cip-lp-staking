@@ -30,17 +30,17 @@ import { publicProvider } from "wagmi/providers/public";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { darkTheme } from "@rainbow-me/rainbowkit";
 
-import { EthereumProvider } from "../context/cipMainContext.js";
+import { EthereumProvider, TEST_MODE } from "../context/cipMainContext.js";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [ sepolia,arbitrum ],
   [
-    alchemyProvider({ apiKey: "rPP4tqmuLqPcd0I0qh32c1H8wCSDsiB9" }),
+    alchemyProvider({ apiKey: "iC7XerO0T0VuHxfivkPAZl8K1c8VKOgN" }),
     publicProvider(),
   ]
 );
 
-const projectId = "8a95b01a64c8725c00ff6dcea1290685";
+const projectId = TEST_MODE?"8a95b01a64c8725c00ff6dcea1290685":"affe2623cf283290a9c376c5626bd924"; 
 
 const demoAppInfo = {
   appName: "CIP Pro Dapp",

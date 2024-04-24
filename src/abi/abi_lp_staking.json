@@ -1,45 +1,168 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_initialOwner", "type": "address" },
-      { "internalType": "address", "name": "_rewardWallet", "type": "address" },
-      { "internalType": "address", "name": "_cipAddress", "type": "address" },
-      { "internalType": "address", "name": "_nftAddress", "type": "address" },
-      { "internalType": "uint256", "name": "_apr", "type": "uint256" },
-      { "internalType": "uint256", "name": "_refRewardPer", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "_initialOwner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_rewardWallet",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_cipWethPool",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_cipArbiPool",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_cipDaiPool",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[5]",
+        "name": "refApr",
+        "type": "uint256[5]"
+      },
+      {
+        "internalType": "uint256[5]",
+        "name": "downlinersRequired",
+        "type": "uint256[5]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_apr",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_refRewardPer",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
-  { "inputs": [], "name": "CantReferYourSelf", "type": "error" },
-  { "inputs": [], "name": "InvalidAPR", "type": "error" },
-  { "inputs": [], "name": "InvalidFees", "type": "error" },
-  { "inputs": [], "name": "InvalidLevel", "type": "error" },
-  { "inputs": [], "name": "InvalidPercentage", "type": "error" },
-  { "inputs": [], "name": "NotExist", "type": "error" },
-  { "inputs": [], "name": "NotOwner", "type": "error" },
+  {
+    "inputs": [],
+    "name": "CantReferYourSelf",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidAPR",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidFees",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidLevel",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidLiquidity",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidPercentage",
+    "type": "error"
+  },
   {
     "inputs": [
-      { "internalType": "address", "name": "owner", "type": "address" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenID",
+        "type": "uint256"
+      }
+    ],
+    "name": "NFTNotEligible",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotExist",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
     ],
     "name": "OwnableInvalidOwner",
     "type": "error"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
     "name": "OwnableUnauthorizedAccount",
     "type": "error"
   },
-  { "inputs": [], "name": "RefereeNotRegistered", "type": "error" },
-  { "inputs": [], "name": "RewardAlreadyClaimed", "type": "error" },
-  { "inputs": [], "name": "RewardNotAvailableYet", "type": "error" },
-  { "inputs": [], "name": "SameAPR", "type": "error" },
-  { "inputs": [], "name": "SameAction", "type": "error" },
-  { "inputs": [], "name": "SamePercentage", "type": "error" },
-  { "inputs": [], "name": "SameWallet", "type": "error" },
-  { "inputs": [], "name": "StakingPeriodNotOver", "type": "error" },
+  {
+    "inputs": [],
+    "name": "RefereeNotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RewardAlreadyClaimed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RewardNotAvailableYet",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SameAPR",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SameAction",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SamePercentage",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SameWallet",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "StakingPeriodNotOver",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -171,6 +294,31 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "by",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "level",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newAPR",
+        "type": "uint256"
+      }
+    ],
+    "name": "RefAPRChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "user",
         "type": "address"
       },
@@ -274,8 +422,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_tokenAddress", "type": "address" },
-      { "internalType": "uint24", "name": "_newFees", "type": "uint24" }
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint24",
+        "name": "_newFees",
+        "type": "uint24"
+      }
     ],
     "name": "changeDaiPoolFees",
     "outputs": [],
@@ -284,7 +440,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_newPer", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_newPer",
+        "type": "uint256"
+      }
     ],
     "name": "changeRefPercentage",
     "outputs": [],
@@ -293,7 +453,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_newWallet", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_newWallet",
+        "type": "address"
+      }
     ],
     "name": "changeRewardWallet",
     "outputs": [],
@@ -302,7 +466,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenID", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenID",
+        "type": "uint256"
+      }
     ],
     "name": "claimRewards",
     "outputs": [],
@@ -311,11 +479,19 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenID", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenID",
+        "type": "uint256"
+      }
     ],
     "name": "earned",
     "outputs": [
-      { "internalType": "uint256", "name": "reward", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "reward",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -323,20 +499,38 @@
   {
     "inputs": [],
     "name": "getAPR",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenID", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenID",
+        "type": "uint256"
+      }
     ],
     "name": "getDetails",
     "outputs": [
       {
         "components": [
-          { "internalType": "address", "name": "owner", "type": "address" },
-          { "internalType": "uint256", "name": "startTime", "type": "uint256" },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "lastRewardTime",
@@ -347,10 +541,18 @@
             "name": "nextRewardTime",
             "type": "uint256"
           },
-          { "internalType": "uint256", "name": "endTime", "type": "uint256" },
-          { "internalType": "uint256", "name": "liquidity", "type": "uint256" }
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint128",
+            "name": "liquidity",
+            "type": "uint128"
+          }
         ],
-        "internalType": "struct LPStakingTest.NFT",
+        "internalType": "struct LPStaking.NFT",
         "name": "",
         "type": "tuple"
       }
@@ -360,12 +562,50 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_user", "type": "address" },
-      { "internalType": "uint256", "name": "_level", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_level",
+        "type": "uint256"
+      }
     ],
     "name": "getDownliners",
     "outputs": [
-      { "internalType": "address[]", "name": "referees", "type": "address[]" }
+      {
+        "internalType": "address[]",
+        "name": "referees",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDownlinersRequired",
+    "outputs": [
+      {
+        "internalType": "uint256[5]",
+        "name": "",
+        "type": "uint256[5]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getReferralApr",
+    "outputs": [
+      {
+        "internalType": "uint256[5]",
+        "name": "",
+        "type": "uint256[5]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -373,33 +613,59 @@
   {
     "inputs": [],
     "name": "getReferralRewardPer",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getTVL",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getTotalLPs",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_user", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
     ],
     "name": "getUserDetails",
     "outputs": [
       {
         "components": [
-          { "internalType": "address", "name": "referral", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "referral",
+            "type": "address"
+          },
           {
             "internalType": "uint256[5]",
             "name": "referralRewards",
@@ -420,9 +686,13 @@
             "name": "totalRewards",
             "type": "uint256"
           },
-          { "internalType": "bool", "name": "isRegistered", "type": "bool" }
+          {
+            "internalType": "bool",
+            "name": "isRegistered",
+            "type": "bool"
+          }
         ],
-        "internalType": "struct LPStakingTest.User",
+        "internalType": "struct LPStaking.User",
         "name": "",
         "type": "tuple"
       }
@@ -432,16 +702,30 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_poolAddr", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_poolAddr",
+        "type": "address"
+      }
     ],
     "name": "isPoolAllowed",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenID", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenID",
+        "type": "uint256"
+      }
     ],
     "name": "maxTick",
     "outputs": [],
@@ -450,7 +734,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_newAPR", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_newAPR",
+        "type": "uint256"
+      }
     ],
     "name": "minTick",
     "outputs": [],
@@ -459,20 +747,48 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "bytes", "name": "", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
     ],
     "name": "onERC721Received",
-    "outputs": [{ "internalType": "bytes4", "name": "", "type": "bytes4" }],
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
     "stateMutability": "pure",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -485,8 +801,16 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenID", "type": "uint256" },
-      { "internalType": "address", "name": "_referral", "type": "address" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_referral",
+        "type": "address"
+      }
     ],
     "name": "stakeNFT",
     "outputs": [],
@@ -495,7 +819,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -504,7 +832,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenID", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenID",
+        "type": "uint256"
+      }
     ],
     "name": "unstakeNFT",
     "outputs": [],
@@ -513,8 +845,16 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "index", "type": "uint256" },
-      { "internalType": "uint256", "name": "_newReq", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_newReq",
+        "type": "uint256"
+      }
     ],
     "name": "updateDownlinersRequired",
     "outputs": [],
@@ -523,8 +863,34 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_poolAddress", "type": "address" },
-      { "internalType": "bool", "name": "_action", "type": "bool" }
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_newPer",
+        "type": "uint256"
+      }
+    ],
+    "name": "updatePercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_poolAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_action",
+        "type": "bool"
+      }
     ],
     "name": "updatePools",
     "outputs": [],

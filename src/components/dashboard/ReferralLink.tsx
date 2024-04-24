@@ -1,5 +1,5 @@
 "use client";
-import { useEthereum } from "@/context/cipMainContext";
+import { CLIENT_BASE_URL, useEthereum } from "@/context/cipMainContext";
 import { Input } from "..";
 import { useRouter } from "next/router";
 import { copyToClipboard } from "@/utils/helper";
@@ -16,7 +16,7 @@ const ReferralLink = () => {
     useEthereum();
   // console.log(userData);
   let userId = userData && userData.length > 0 ? Number(userData[0]) : 0;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl = CLIENT_BASE_URL;
 
   // const encryptId = (str) => {
   //   const ciphertext = AES.encrypt(str, 'secretPassphrase');
