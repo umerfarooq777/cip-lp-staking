@@ -30,7 +30,7 @@ import { ethers } from "ethers";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
-export const TEST_MODE = true;
+export const TEST_MODE = false;
 export const ENABLE_FUNC = true;
 export const DISABLE_FUNC = false;
 export const CLIENT_BASE_URL = TEST_MODE?"http://localhost:3000/":"https://dapp.cippro.io/"; //
@@ -122,7 +122,7 @@ const TOKEN_CONTRACT_ADDRESS = "0xd7a892f28dEdC74E6b7b33F93BE08abfC394a360";
 const TOKEN_CONTRACT_ADDRESS_OLD = "";
 
 
-const UNISWAP_UTILITY_ADDRESS = "0x5ca565295A47cbc6aE3310cD37A873A1ab4f445a";
+const UNISWAP_UTILITY_ADDRESS = "0x5ca565295A47cbc6aE3310cD37A873A1ab4f445a"; //arbitrum main
 const CIP_PRO_ARBI =TEST_MODE?"0x044989224c4fe4c35D43894237271B97a6da31B1":"0x3bDA582BFbfF76036f5C7174dFf4928D64E79478"; //cip pro
 const DAI_ARBI = "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1";
 
@@ -181,7 +181,7 @@ export function EthereumProvider({ children }) {
 
   const LP_STAKING_CONTRACT_ADDRESS = TEST_MODE 
     ? "0x6Aa26E1CAB85a79eBC47Fc12d424FE4BAd98fF9f" 
-    : "0x590b74fe2FF5d9b974C812a128633636302Dd670";
+    : "0x78B1F2f7145Ac0582843aB668BE2e7990B4693BB";
   const LP_NFT_CONTRACT_ADDRESS = TEST_MODE
     ? "0xBC163a11AEbc3c445953828BeD96fB5f5A60105f"
     : "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";

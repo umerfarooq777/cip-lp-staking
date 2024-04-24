@@ -34,7 +34,6 @@ const LPStaking2 = () => {
     LP_NFT_CONTRACT_ADDRESS,
     LP_NFT_CONTRACT_ABI,
     getUserLPTokenData: refetchNFTData,
-    headAddress,
     TEST_MODE,
     lpReferralAddress,
     isValidRefAddress,
@@ -422,7 +421,6 @@ const LP_TOKEN = ({
     LP_TOKEN3_CONTRACT_ADDRESS,
     getUserLPTokenData: refetchUserNFTData,
     TEST_MODE,
-    headAddress,
   } = useEthereum();
 
   const [NFTSVG, setNFTSVG] = useState<any>(null);

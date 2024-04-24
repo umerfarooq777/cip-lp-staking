@@ -30,12 +30,12 @@ import { publicProvider } from "wagmi/providers/public";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { darkTheme } from "@rainbow-me/rainbowkit";
 
-import { EthereumProvider, TEST_MODE } from "../context/cipMainContext.js";
+import { ALCHEMY_API_KEY, EthereumProvider, TEST_MODE } from "../context/cipMainContext.js";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [...(TEST_MODE?[ sepolia]:[arbitrum])],
   [
-    alchemyProvider({ apiKey: "iC7XerO0T0VuHxfivkPAZl8K1c8VKOgN" }),
+    alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
     publicProvider(),
   ]
 );
