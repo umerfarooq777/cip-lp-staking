@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#3C54F5",
+        primary: "#4DAFFB",
+        secondary: "#0E1D6A",
         black: {
           DEFAULT: "#000000",
           50: "#B8B8B8",
@@ -31,4 +32,4 @@ module.exports = {
 
 
 // old cip primary #703CF5
-// new pro cip primary #3C54F5
+// new pro cip primary #4DAFFB

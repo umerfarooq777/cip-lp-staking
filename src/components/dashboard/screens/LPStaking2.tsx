@@ -376,7 +376,7 @@ const LPStaking2 = () => {
               <a
                 href={"https://app.uniswap.org/pools?chain=arbitrum"}
                 target="_blank"
-                className="text-primary font-normal text-base hover:underline"
+                className="text-[#ffffff] text-base font-bold hover:underline"
               >
                 click here
               </a>{" "}

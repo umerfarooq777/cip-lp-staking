@@ -89,7 +89,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         chains={chains}
         appInfo={demoAppInfo}
         theme={darkTheme({
-          accentColor: "#3C54F5",
+          accentColor: "#4DAFFB",
           accentColorForeground: "white",
           borderRadius: "medium",
           fontStack: "system",
