@@ -378,7 +378,7 @@ const LPStaking2 = () => {
                 target="_blank"
                 className="text-[#ffffff] text-base font-bold hover:underline"
               >
-                click here
+                click here 
               </a>{" "}
               to provide, and get liquidity token.
             </>
