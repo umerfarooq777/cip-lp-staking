@@ -33,7 +33,7 @@ import { darkTheme } from "@rainbow-me/rainbowkit";
 import { EthereumProvider, TEST_MODE } from "../context/cipMainContext.js";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [ sepolia,arbitrum ],
+  [...(TEST_MODE?[ sepolia]:[arbitrum])],
   [
     alchemyProvider({ apiKey: "iC7XerO0T0VuHxfivkPAZl8K1c8VKOgN" }),
     publicProvider(),
