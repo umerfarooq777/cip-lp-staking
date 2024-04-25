@@ -30,7 +30,7 @@ import { ethers } from "ethers";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
-export const TEST_MODE = false;
+export const TEST_MODE = true;
 export const ENABLE_FUNC = true;
 export const DISABLE_FUNC = false;
 export const CLIENT_BASE_URL = TEST_MODE?"http://localhost:3000/":"https://dapp.cippro.io/"; //
