@@ -329,7 +329,7 @@ export function EthereumProvider({ children }) {
       filter.fromBlock = 138260764; // cip token creation block number
       let events = await uniV3TokenContract.queryFilter(filter);
 
-      const cipTokenAddressLowerCase = TOKEN_CONTRACT_ADDRESS.toLowerCase();
+      const cipTokenAddressLowerCase = CIP_PRO_ARBI.toLowerCase();
       //!====================================
 
       const uniqueNFTData = await Promise.all(
