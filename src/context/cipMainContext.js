@@ -24,17 +24,20 @@ import {
   useContractReads,
   useContractWrite,
 } from "wagmi";
-import { convertETHTo } from "@/utils/helper";
+import { convertETHTo, convertWEITo } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import { ethers } from "ethers";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
 export const TEST_MODE = true;
+export const LIQUIDITY_REQUIRED = 100; // 100 dollar or dai
 export const ENABLE_FUNC = true;
 export const DISABLE_FUNC = false;
-export const CLIENT_BASE_URL = TEST_MODE?"http://localhost:3000/":"https://dapp.cippro.io/"; //
-export const ALCHEMY_API_KEY = "iC7XerO0T0VuHxfivkPAZl8K1c8VKOgN"
+export const CLIENT_BASE_URL = TEST_MODE
+  ? "http://localhost:3000/"
+  : "https://dapp.cippro.io/"; //
+export const ALCHEMY_API_KEY = "iC7XerO0T0VuHxfivkPAZl8K1c8VKOgN";
 //!================ LOADERS start
 
 const notifySuccessWithHashToastId = { current: null };
@@ -121,10 +124,17 @@ const CONTRACT_ADDRESS = "0x80D60D73cc0aC8D4E102287efc90db1120907CC4"; //arbitru
 const TOKEN_CONTRACT_ADDRESS = "0xd7a892f28dEdC74E6b7b33F93BE08abfC394a360";
 const TOKEN_CONTRACT_ADDRESS_OLD = "";
 
-
-const UNISWAP_UTILITY_ADDRESS = "0x5ca565295A47cbc6aE3310cD37A873A1ab4f445a"; //arbitrum main
-const CIP_PRO_ARBI =TEST_MODE?"0x044989224c4fe4c35D43894237271B97a6da31B1":"0x3bDA582BFbfF76036f5C7174dFf4928D64E79478"; //cip pro
-const DAI_ARBI = "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1";
+export const UNISWAP_UTILITY_ADDRESS =
+  "0x5ca565295A47cbc6aE3310cD37A873A1ab4f445a"; //arbitrum main
+export const CIP_PRO_ARBI = (
+  TEST_MODE
+    ? "0x044989224c4fe4c35D43894237271B97a6da31B1"
+    : "0x3bDA582BFbfF76036f5C7174dFf4928D64E79478"
+).toLowerCase(); //cip pro
+export const DAI_ARBI =
+  "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1".toLowerCase();
+export const ARBI_ADDRESS =
+  "0x912CE59144191C1204E64559FE8253a0e49E6548".toLowerCase();
 
 // Create a custom hook to access the Ethereum context
 export function useEthereum() {
@@ -154,7 +164,7 @@ export function EthereumProvider({ children }) {
   useEffect(() => {
     console.log("lpreferralcode", searchParams.get("lpreferralcode"));
     const refAddress = searchParams.get("lpreferralcode");
-    if(refAddress !== null) {
+    if (refAddress !== null) {
       setUserActiveTab(12); //for LP Staking
     }
 
@@ -169,7 +179,7 @@ export function EthereumProvider({ children }) {
       setIsValidRefAddress(true);
       setIstSelfRef(false);
     }
-  }, [searchParams,currentWalletAddress]);
+  }, [searchParams, currentWalletAddress]);
 
   // //!  === TEST
   // const LP_STAKING_CONTRACT_ADDRESS = TEST_MODE
@@ -179,8 +189,8 @@ export function EthereumProvider({ children }) {
   //   ? "0xa66A457c4592d8c377bA15c5217f742384F3B163"
   //   : "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
 
-  const LP_STAKING_CONTRACT_ADDRESS = TEST_MODE 
-    ? "0x6Aa26E1CAB85a79eBC47Fc12d424FE4BAd98fF9f" 
+  const LP_STAKING_CONTRACT_ADDRESS = TEST_MODE
+    ? "0x6Aa26E1CAB85a79eBC47Fc12d424FE4BAd98fF9f"
     : "0x78B1F2f7145Ac0582843aB668BE2e7990B4693BB";
   const LP_NFT_CONTRACT_ADDRESS = TEST_MODE
     ? "0xBC163a11AEbc3c445953828BeD96fB5f5A60105f"
@@ -191,7 +201,7 @@ export function EthereumProvider({ children }) {
   const LP_NFT_CONTRACT_ABI = _LP_TOKEN_CONTRACT_ABI; // mainnet:v3nftABI ,sepolia:testnftabi
   const LP_STAKING_CONTRACT_ABI = _LP_STAKING_CONTRACT_ABI; //staking abi
   const LP_TOKEN_UNIV3_CONTRACT_ABI = _LP_TOKEN_UNIV3_CONTRACT_ABI; //v3nftABI
-  const UNISWAP_UTILITY_ABI = _UNISWAP_UTILITY_ABI; 
+  const UNISWAP_UTILITY_ABI = _UNISWAP_UTILITY_ABI;
 
   const { chain: chainData, chains } = useNetwork();
 
@@ -265,7 +275,7 @@ export function EthereumProvider({ children }) {
               console.error(`Error getting owner of NFT ${id}:`, error);
               return null; // Skip this NFT if there's an error
             }
-            console.log({nftOwner,userAddress,lpStakeOwner,id})
+            console.log({ nftOwner, userAddress, lpStakeOwner, id });
 
             if (nftOwner === userAddress || userAddress === lpStakeOwner) {
               try {
@@ -274,6 +284,8 @@ export function EthereumProvider({ children }) {
                   id,
                   isStaked: userAddress === lpStakeOwner,
                   tokenURI,
+                  insufficientLiquidy: 100 < LIQUIDITY_REQUIRED,
+                  totalLiquidity:100
                 };
               } catch (error) {
                 console.error(`Error getting token URI for NFT ${id}:`, error);
@@ -321,15 +333,18 @@ export function EthereumProvider({ children }) {
         LP_TOKEN_UNIV3_CONTRACT_ABI,
         arbiProvider
       );
-
+      const _helperUniswap = new ethers.Contract(
+        UNISWAP_UTILITY_ADDRESS,
+        UNISWAP_UTILITY_ABI,
+        arbiProvider
+      );
       // Create a filter for the Transfer event with the specified "to" address
       let filter = uniV3TokenContract.filters.Transfer(null, userAddress, null);
 
       // Specify the starting block number for the query
-      filter.fromBlock = 138260764; // cip token creation block number
+      filter.fromBlock = 199291973; // cip pro token creation block number
       let events = await uniV3TokenContract.queryFilter(filter);
 
-      const cipTokenAddressLowerCase = CIP_PRO_ARBI.toLowerCase();
       //!====================================
 
       const uniqueNFTData = await Promise.all(
@@ -351,10 +366,7 @@ export function EthereumProvider({ children }) {
 
             const token0 = positionData[2].toLowerCase();
             const token1 = positionData[3].toLowerCase();
-            if (
-              cipTokenAddressLowerCase === token0 ||
-              cipTokenAddressLowerCase === token1
-            ) {
+            if (CIP_PRO_ARBI === token0 || CIP_PRO_ARBI === token1) {
               let nftOwner;
               let lpStakeOwner;
               try {
@@ -372,16 +384,89 @@ export function EthereumProvider({ children }) {
               }
 
               if (nftOwner === userAddress || lpStakeOwner === userAddress) {
+                let TOTAL_LIQUIDITY = 0;
                 try {
+                  if (nftOwner === userAddress) {
+                    let response 
+                    try {
+                      response = await _helperUniswap.getTokensDetails(id);
+                      
+                    } catch (error) {
+                      console.error(
+                        `Error getting details for NFT ${id}:`,
+                        error
+                      );
+                      return null
+                      
+                    }
+                    const token0 = response[0].toLowerCase();
+                    const token1 = response[1].toLowerCase();
+                    let amount0 = response[2];
+                    let amount1 = response[3];
+                    if (token0 != DAI_ARBI) {
+                      
+                      try {
+                        amount0 = await _helperUniswap.getPrice(
+                          token0,
+                          DAI_ARBI,
+                          amount0,
+                          token0 === CIP_PRO_ARBI ? "10000" : "3000"
+                        );
+  
+                      } catch (error) {
+                        console.error(
+                          `Error getting token0 price for NFT ${id}:`,
+                          error
+                        );
+                        return null
+                        
+                      }
+                    }
+                    if (token1 != DAI_ARBI) {
+                      
+                      try {
+                        amount1 = await _helperUniswap.getPrice(
+                          token1,
+                          DAI_ARBI,
+                          amount1,
+                          token1 === CIP_PRO_ARBI ? "10000" : "3000"
+                        );
+  
+                      } catch (error) {
+                        console.error(
+                          `Error getting token1 price for NFT ${id}:`,
+                          error
+                        );
+                        return null
+                        
+                      }
+                    }
+
+                    const price0 = Number(ethers.formatEther(`${amount0}`));
+                    const price1 = Number(ethers.formatEther(`${amount1}`));
+                    TOTAL_LIQUIDITY = price0 + price1;
+                    console.log("TOTAL_LIQUIDITY", {
+                      token0,
+                      token1,
+                      amount0,
+                      amount1,
+                      price0,
+                      price1,
+                      TOTAL_LIQUIDITY
+                    });
+                  }
+
                   let tokenURI = await uniV3TokenContract.tokenURI(id);
                   return {
                     id,
                     isStaked: userAddress === lpStakeOwner,
                     tokenURI,
+                    insufficientLiquidy: TOTAL_LIQUIDITY < LIQUIDITY_REQUIRED,
+                    totalLiquidity:TOTAL_LIQUIDITY
                   };
                 } catch (error) {
                   console.error(
-                    `Error getting token URI for NFT ${id}:`,
+                    `Error getting token uri for NFT ${id}:`,
                     error
                   );
                   return null; // Skip this NFT if there's an error
@@ -440,7 +525,7 @@ export function EthereumProvider({ children }) {
     functionName: "users",
     args: [currentWalletAddress],
     watch: true,
-    enabled: DISABLE_FUNC
+    enabled: DISABLE_FUNC,
   });
   const { data: userBonusData } = useContractRead({
     address: CONTRACT_ADDRESS,
@@ -448,7 +533,7 @@ export function EthereumProvider({ children }) {
     functionName: "usersBonus",
     args: [currentWalletAddress],
     watch: true,
-    enabled: DISABLE_FUNC
+    enabled: DISABLE_FUNC,
   });
   const { data: userEarnedData } = useContractRead({
     address: CONTRACT_ADDRESS,
@@ -456,7 +541,7 @@ export function EthereumProvider({ children }) {
     functionName: "earned",
     args: [currentWalletAddress],
     watch: true,
-    enabled: DISABLE_FUNC
+    enabled: DISABLE_FUNC,
   });
   const { data: userCIPBalance } = useContractRead({
     address: CIP_PRO_ARBI,
@@ -473,7 +558,7 @@ export function EthereumProvider({ children }) {
       functionName: "level_downline",
       args: [currentWalletAddress],
       watch: true,
-      enabled: DISABLE_FUNC
+      enabled: DISABLE_FUNC,
     });
   //!=====================================================
 
@@ -489,29 +574,26 @@ export function EthereumProvider({ children }) {
     address: LP_STAKING_CONTRACT_ADDRESS,
     abi: LP_STAKING_CONTRACT_ABI,
     functionName: "getTVL",
-    watch: true
+    watch: true,
   });
 
   useEffect(() => {
-  console.log("totalValueLocked",totalValueLocked)
-  }, [totalValueLocked])
-  
-
+    console.log("totalValueLocked", totalValueLocked);
+  }, [totalValueLocked]);
 
   const { data: cipOwner } = useContractRead({
     address: CONTRACT_ADDRESS,
     abi: ABI,
     functionName: "owner",
     watch: true,
-    enabled:DISABLE_FUNC
-
+    enabled: DISABLE_FUNC,
   });
 
   const { data: oneCIPpriceInDAI } = useContractRead({
     address: UNISWAP_UTILITY_ADDRESS,
     abi: UNISWAP_UTILITY_ABI,
     functionName: "getPrice",
-    args: [CIP_PRO_ARBI,DAI_ARBI,convertETHTo("1", "wei"),"10000"],
+    args: [CIP_PRO_ARBI, DAI_ARBI, convertETHTo("1", "wei"), "10000"],
     watch: true,
   });
 
@@ -521,7 +603,7 @@ export function EthereumProvider({ children }) {
     functionName: "_getPriceCIP",
     args: [convertETHTo("100", "wei")],
     watch: true,
-    enabled:DISABLE_FUNC
+    enabled: DISABLE_FUNC,
   });
   const { data: userCurrentAllowance } = useContractRead({
     //check for user allowed cip
@@ -547,7 +629,7 @@ export function EthereumProvider({ children }) {
     functionName: "estimatedRank",
     args: [currentWalletAddress],
     watch: true,
-    enabled: DISABLE_FUNC
+    enabled: DISABLE_FUNC,
   });
   const { data: estimated_UP_Rank } = useContractRead({
     address: CONTRACT_ADDRESS,
@@ -555,7 +637,7 @@ export function EthereumProvider({ children }) {
     functionName: "EstimatedUniversalPoolRank",
     args: [currentWalletAddress],
     watch: true,
-    enabled: DISABLE_FUNC
+    enabled: DISABLE_FUNC,
   });
   const { data: getUserDetailsData } = useContractRead({
     address: LP_STAKING_CONTRACT_ADDRESS,
@@ -570,13 +652,12 @@ export function EthereumProvider({ children }) {
     abi: LP_STAKING_CONTRACT_ABI,
     functionName: "getDownliners",
     watch: true,
-    
   };
   const downLineConfig = {
     address: CONTRACT_ADDRESS,
     abi: ABI,
     functionName: "getReferees",
-    enabled:DISABLE_FUNC
+    enabled: DISABLE_FUNC,
   };
 
   const { data: mylpDownLineData } = useContractReads({
@@ -616,32 +697,35 @@ export function EthereumProvider({ children }) {
     let newData = [];
     let newDataForDownline = [];
     let teamSize = 0;
-    if (mylpDownLineData != undefined && getUserDetailsData !== undefined && currentWalletAddress) {
-      if(myLpDownLineDataMod2.length==0) {
-        setlpDownlineLoading(true)
+    if (
+      mylpDownLineData != undefined &&
+      getUserDetailsData !== undefined &&
+      currentWalletAddress
+    ) {
+      if (myLpDownLineDataMod2.length == 0) {
+        setlpDownlineLoading(true);
       }
       for (let i = 0; i < mylpDownLineData.length; i++) {
         if (mylpDownLineData[i].status == "success") {
           let noOfReferrals = mylpDownLineData[i]?.result;
-          console.log("myLpDownLineDataMod2",noOfReferrals)
-          
-          teamSize = teamSize + noOfReferrals.length
+          console.log("myLpDownLineDataMod2", noOfReferrals);
+
+          teamSize = teamSize + noOfReferrals.length;
           const levelRewards = getUserDetailsData.referralRewards[i].toString();
 
-          if(noOfReferrals.length>0){
+          if (noOfReferrals.length > 0) {
             for (let j = 0; j < noOfReferrals.length; j++) {
-              let address = noOfReferrals[j]
-              console.log("myLpDownLineDataMod2",{
+              let address = noOfReferrals[j];
+              console.log("myLpDownLineDataMod2", {
                 level: i + 1,
-                address
-              })
+                address,
+              });
               newDataForDownline.push({
                 level: i + 1,
-                address
+                address,
               });
             }
           }
-
 
           newData.push({
             level: i + 1,
@@ -651,11 +735,11 @@ export function EthereumProvider({ children }) {
         }
       }
     }
-    setlpDownLineTeamSize(teamSize)
+    setlpDownLineTeamSize(teamSize);
     setlpMyDownLineDataMod(newData);
-    setlpMyDownLineDataMod2(newDataForDownline)
+    setlpMyDownLineDataMod2(newDataForDownline);
     setlpDownlineLoading(false);
-  }, [mylpDownLineData,currentWalletAddress]);
+  }, [mylpDownLineData, currentWalletAddress]);
 
   const {
     data: myDownLineData,
@@ -835,7 +919,7 @@ export function EthereumProvider({ children }) {
         UNISWAP_UTILITY_ABI,
         CIP_PRO_ARBI,
         DAI_ARBI,
-        lpDownLineTeamSize
+        lpDownLineTeamSize,
       }}
     >
       {children}

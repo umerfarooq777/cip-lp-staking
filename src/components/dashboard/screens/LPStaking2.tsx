@@ -1,5 +1,5 @@
 import { Button, Input, Note } from "@/components";
-import { CLIENT_BASE_URL, useEthereum } from "@/context/cipMainContext";
+import { CLIENT_BASE_URL, LIQUIDITY_REQUIRED, useEthereum } from "@/context/cipMainContext";
 import {
   convertWEITo,
   convertWEITo_ForROI,
@@ -353,7 +353,7 @@ const LPStaking2 = () => {
         userLPData.length > 0 ? (
           userLPData.map(
             (
-              item: { isStaked: boolean; id: string; tokenURI: string },
+              item: { isStaked: boolean; id: string; tokenURI: string ,insufficientLiquidy:boolean,totalLiquidity:number},
               index: number
             ) => (
               <LP_TOKEN
@@ -400,6 +400,8 @@ const LP_TOKEN = ({
   lpReferralAddress,
   isValidRefAddress,
   isSelfRef,
+  insufficientLiquidy,
+  totalLiquidity
 }: {
   isStaked: boolean;
   id: string;
@@ -407,6 +409,8 @@ const LP_TOKEN = ({
   lpReferralAddress: string;
   isValidRefAddress: boolean;
   isSelfRef: boolean;
+  insufficientLiquidy:boolean;
+  totalLiquidity:number;
 }) => {
   const {
     notifyError,
@@ -448,6 +452,7 @@ const LP_TOKEN = ({
 
   const [isApprove, setIsApprove] = useState<boolean>(false);
   const [isStaked, setIsStaked] = useState<boolean>(nftStaked);
+  const [insufficientLiquidyState, setInsufficientLiquidyState] = useState<boolean>(insufficientLiquidy);
 
   const { data: userToken1Allowance, error: userToken1AllowanceError } =
     useContractRead({
@@ -555,7 +560,7 @@ const LP_TOKEN = ({
     functionName: "stakeNFT",
     args: [id, lpReferralAddress !== "" ? lpReferralAddress : ZeroAddress],
     account: currentWalletAddress,
-    enabled: !isStaked && isApprove && isValidRefAddress && !isSelfRef,
+    enabled: !isStaked && isApprove && isValidRefAddress && !isSelfRef && !insufficientLiquidyState
   });
 
   const {
@@ -867,6 +872,10 @@ const LP_TOKEN = ({
                 {!isAddressTokenOwner ? (
                   <span className="text-red-600">You are not owner of LP </span>
                 ) : null}
+                {insufficientLiquidyState ? (
+                  <span className="text-red-600">Insufficient Liquidity: current $ {(totalLiquidity).toFixed(2)}, required $ {LIQUIDITY_REQUIRED} atleast. </span>
+                ) : null}
+
               </div>
             )}
           </div>
@@ -898,7 +907,8 @@ const LP_TOKEN = ({
                     approveUserToken1Loader ||
                     !isValidRefAddress ||
                     !isAddressTokenOwner ||
-                    isSelfRef
+                    isSelfRef ||
+                    insufficientLiquidyState
                   }
                   condition={approveUserToken1Loader ? "loading" : "stable"}
                   onClick={() => approveUserToken1Write?.()}
